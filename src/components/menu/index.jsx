@@ -28,7 +28,7 @@ const Menu = ({ onClose }) => {
 
     const { openModal } = useContext(ModalContext);
 
-    const { sendMessage, socketData } = useSocket();
+    const { sendMessage, socketData} = useSocket();
 
     // const searchInputRef = useRef(null);
 
@@ -42,8 +42,6 @@ const Menu = ({ onClose }) => {
     const [searchChat, setSearchChat] = useState('');
     const [groupName, setGroupName] = useState(null);
     const [shouldFetchChatID, setShouldFetchChatID] = useState(false);
-
-    const { reloadGroups, setReloadGroups } = useReload();
     
     const getchatID = useGetChatID(user_name, groupName, shouldFetchChatID);
 
@@ -69,9 +67,6 @@ const Menu = ({ onClose }) => {
     }, []);
 
   useEffect(() => {
-    setChats(prevChats => {
-      let updatedChats = [...prevChats];
-
     if (Array.isArray(socketData?.contacts)) {
       const newContacts = socketData.contacts.map(user => ({
         id: user._id,
@@ -79,36 +74,27 @@ const Menu = ({ onClose }) => {
         type: 'private',
       }));
 
-      const prevContacts = prevChats.filter(chat => chat.type === 'private');
+      setChats(prevChats => {
+        const filtered = prevChats.filter(chat => chat.type !== 'private');
+        return [...filtered, ...newContacts];
+      });
+    }
+  }, [socketData?.contacts]);
 
-      // Verifica se mudou
-      const contactsChanged = JSON.stringify(prevContacts) !== JSON.stringify(newContacts);
+  useEffect(() => {
+    if (Array.isArray(socketData?.groups)) {
+      const newGroups = socketData.groups.map(group => ({
+        id: group.id,
+        username: group.name,
+        type: 'group',
+      }));
 
-      if (contactsChanged) {
-          updatedChats = updatedChats.filter(chat => chat.type !== 'private');
-          updatedChats = [...updatedChats, ...newContacts];
-        }
-      }
-
-      if (Array.isArray(socketData?.groups)) {
-        const newGroups = socketData.groups.map(group => ({
-          id: group.id,
-          username: group.name,
-          type: 'group',
-        }));
-        const prevGroups = prevChats.filter(chat => chat.type === 'group');
-
-        const groupsChanged = JSON.stringify(prevGroups) !== JSON.stringify(newGroups);
-
-        if (groupsChanged) {
-          updatedChats = updatedChats.filter(chat => chat.type !== 'group');
-          updatedChats = [...updatedChats, ...newGroups];
-        }
-      }
-
-      return updatedChats;
-    });
-  }, [socketData]);
+      setChats(prevChats => {
+        const filtered = prevChats.filter(chat => chat.type !== 'group');
+        return [...filtered, ...newGroups];
+      });
+    }
+  }, [socketData?.groups]);
 
 
     const filteredChat = chats?.filter((chat) =>
@@ -122,11 +108,11 @@ const Menu = ({ onClose }) => {
     }, [getchatID]);
 
     useEffect(() => {
-      if (reloadGroups) {
+      if (socketData?.message === "Chat created") {
+        console.log("Grupo criado — forçando reload de grupos");
         handleGetGroups();
-        setReloadGroups(false);
       }
-    }, [reloadGroups]);
+    }, [socketData?.message ]);
 
     const handleGetContacts = () => {
         sendMessage(JSON.stringify({
@@ -137,7 +123,6 @@ const Menu = ({ onClose }) => {
     }
 
     const handleGetGroups = () => {
-        console.log("Request groups:");
         sendMessage(JSON.stringify({
             channel: "user",
             method: "GET-groups",

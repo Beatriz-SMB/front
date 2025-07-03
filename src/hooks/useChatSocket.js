@@ -16,12 +16,12 @@ export const useChatSocket = (chatID, userID) => {
 
   useEffect(() => {
     if (!chatID || !userID) return;
-    // const server = getCurrentServer();
-    // if (server) {
-    //   const wsUrl = toWebSocketUrl(server) + '/ws?' + 'chatID=' + chatID + '&userID=' + userID;
-    const wsUrl = 'ws://localhost:8080' + '/ws?' + 'chatID=' + chatID + '&userID=' + userID;
-    setUrl(wsUrl);
-    // }
+    const server = getCurrentServer();
+    if (server) {
+      const wsUrl = toWebSocketUrl(server) + '/ws?' + 'chatID=' + chatID + '&userID=' + userID;
+    // const wsUrl = 'ws://localhost:8080' + '/ws?' + 'chatID=' + chatID + '&userID=' + userID;
+      setUrl(wsUrl);
+    }
   }, [chatID, userID]);
 
   const options = {

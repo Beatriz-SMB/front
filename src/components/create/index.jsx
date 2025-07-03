@@ -21,7 +21,7 @@ const Create = () => {
     const { closeModal } = useContext(ModalContext);
     // const { showMessage } = useContext(MessageContext);
 
-    const { sendMessage, socketData } = useSocket();
+    const { sendMessage, socketData, readyState } = useSocket();
     const { setReloadGroups } = useReload();
 
     const [contacts, setContacts] = useState([]);
@@ -32,6 +32,7 @@ const Create = () => {
     const groupnameRef = useRef(null);
 
     let user_id = localStorage.getItem("user_id");
+    let usernameLoaded = localStorage.getItem("user_name");
 
     useEffect(() => {
         handleGetContacts();
@@ -59,22 +60,33 @@ const Create = () => {
     }
 
     const handleAddNewChat = (groupName) => {
-      sendMessage(JSON.stringify({
-        channel: "chat",
-        method: "POST",
-        type: "group",
-        name: groupName,
-        members: selected, 
-      }));
+      if (readyState === WebSocket.OPEN) {
+        sendMessage(JSON.stringify({
+          channel: "chat",
+          method: "POST",
+          type: "group",
+          name: groupName,
+          members: selected, 
+        }));
+      }
     }
 
     const handleChange = (username) => {
       setIsPlusIcon(!isPlusIcon);
-      if (selected.includes(username)) {
-        setSelected(selected.filter((i) => i !== username));
+      setSelected(prev => {
+      let updated;
+
+      if (prev.includes(username)) {
+        updated = prev.filter(i => i !== username);
       } else {
-        setSelected([...selected, username]); 
+        updated = [...prev, username];
       }
+
+      if (!updated.includes(usernameLoaded)) {
+        updated.push(usernameLoaded);
+      }
+      return updated;
+    });
     }  
 
     const handleSubmit = () => {
@@ -82,11 +94,9 @@ const Create = () => {
         if (validateGroupName(groupnameRef.current.value) && selected.length > 0) {
           handleAddNewChat(groupnameRef.current.value);
           setReloadGroups(true); 
-          // showMessage('success', 'Group created successfully!');
-        } else {
-          // showMessage('error', 'Error creating group.');
-        }
-        // closeModal();
+
+          closeModal();
+        } 
         setIsLoading(false);
     }
 
