@@ -15,21 +15,21 @@ export const useSocket = (path = '') => {
   const [url, setUrl] = useState(null);
 
   useEffect(() => {
-    // const server = getCurrentServer();
-    // if (server) {
-    //   const wsUrl = toWebSocketUrl(server) + '/ws' + path;
-    //     const wsUrl = toWebSocketUrl(server) + '/ws?' + 'chatID=' + chatID + '&userID=' + userID;
-    //   const wsUrl = 'ws://localhost:80/ws'
-    // }
-    setUrl('ws://localhost:80/ws');
+    const server = getCurrentServer();
+    if (server) {
+      const wsUrl = toWebSocketUrl(server) + '/ws' + path;
+      // const wsUrl = 'ws://localhost:80/ws'
+      setUrl(wsUrl);
+    }
   }, );
 
   const options = {
-    onOpen: () => console.log(`Connected to App WS 🚀`),
+    // onOpen: () => console.log(`Connected to App WS 🚀`),
     onMessage: (message) => {
       if (!message) return;
       const data = JSON.parse(message.data);
       if (data) {
+        console.log("RECEBIDO DO SOCKET:", data);
         setSocketData(data);
       }
     },
