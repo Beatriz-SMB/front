@@ -52,8 +52,9 @@ async function initServerMonitor(onChange) {
 
 // Exporta a URL ativa
 function getCurrentServer() {
-    console.log("Server available: ",currentServer)
-  return currentServer;
+    // console.log("Server available: ",currentServer)
+    return "ws://localhost:8080";
+  // return currentServer;
 }
 
 export { initServerMonitor, getCurrentServer };

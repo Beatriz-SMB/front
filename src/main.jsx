@@ -14,6 +14,7 @@ import { MessageProvider } from "./context/MessageContext";
 import { ChatProvider } from "./context/ChatContext";
 import { ModalProvider } from "./context/ModalContext";
 import { ReloadProvider } from "./context/ReloadChatsContext";
+import { ContactsProvider } from "./context/ContactsContext";
 
 /* 🧭 ROUTES */
 import { router } from "./routes";
@@ -32,18 +33,20 @@ initServerMonitor((server) => {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MessageProvider>
-      <ModalProvider>
-        <ChatProvider>
-          <ReloadProvider>
-            <Container>
-              <Message />
-              <RouterProvider router={router} />
-              <Modal />
-            </Container>
-          </ReloadProvider>
-        </ChatProvider>
-      </ModalProvider>
-    </MessageProvider>
+    <ContactsProvider>
+      <MessageProvider>
+        <ModalProvider>
+          <ChatProvider>
+            <ReloadProvider>
+                <Container>
+                  <Message />
+                  <RouterProvider router={router} />
+                  <Modal />
+                </Container>
+            </ReloadProvider>
+          </ChatProvider>
+        </ModalProvider>
+      </MessageProvider>
+    </ContactsProvider>
   </StrictMode>,
 )

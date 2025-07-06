@@ -20,9 +20,7 @@ import { useChatInfo } from "../../hooks/useChatInfo";
 
 import { MessageContext } from "../../context/MessageContext";
 import { ChatContext } from "../../context/ChatContext";
-const mensagens = [
 
-];
 
 const Chat = () => {
   const { chatID, messages, addMessage } = useContext(MessageContext);
@@ -34,7 +32,6 @@ const Chat = () => {
 
   const isSmallScreen = useMediaQuery('(max-width: 720px)');
 
-  const { sendMessage, socketData } = useSocket();
   let user_id = localStorage.getItem("user_id");
   let user_name = localStorage.getItem("user_name");
 
@@ -64,6 +61,7 @@ const Chat = () => {
       SenderID: user_id,
       Content: trimmedMessage,
       Created_at: new Date().toISOString(),
+      Username: user_name,
     };
 
     // Adiciona imediatamente no chat 
@@ -75,6 +73,7 @@ const Chat = () => {
       chatId: chatID,
       senderId: user_id,
       content: trimmedMessage,
+      Username: user_name,
     };
 
     sendChatMessage(JSON.stringify(message)); // Envia a mensagem no chat e para o backend
@@ -124,7 +123,7 @@ const Chat = () => {
                             }`}
                             key={index}
                           >
-                            <div className="message-author"><strong>{message.SenderID}</strong></div>
+                            <div className="message-author"><strong>{message.Username}</strong></div>
                             <div className="message-text">{message.Content}</div>
                             <span className="message-time">
                               {new Date(message.Created_at).toLocaleTimeString([], {

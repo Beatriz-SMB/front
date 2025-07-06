@@ -34,6 +34,8 @@ const ChatProvider = ({ children, username1, username2 }) => {
                 SenderID: socketChat.senderId,
                 Content: socketChat.content,
                 Created_at: new Date().toISOString(),
+                Username: socketChat.Username
+
             };
             addMessage(newMessage)
         }
