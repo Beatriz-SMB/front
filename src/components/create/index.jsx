@@ -60,14 +60,14 @@ const Create = () => {
     }
 
     const handleAddNewChat = (groupName) => {
-      if (readyState === WebSocket.OPEN) {
-        sendMessage(JSON.stringify({
-          channel: "chat",
-          method: "POST",
-          type: "group",
-          name: groupName,
-          members: selected, 
-        }));
+    if (readyState === WebSocket.OPEN) {
+      sendMessage(JSON.stringify({
+        channel: "chat",
+        method: "POST",
+        type: "group",
+        name: groupName,
+        members: selected,
+      }));
       }
     }
 
