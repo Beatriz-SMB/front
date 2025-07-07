@@ -47,7 +47,7 @@ async function initServerMonitor(onChange) {
         if (onChange) onChange(currentServer);
       }
     }
-  }, 5000); // verifica a cada 5 segundos
+  }, 2000); // verifica a cada 2 segundos
 }
 
 // Exporta a URL ativa

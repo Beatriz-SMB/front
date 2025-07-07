@@ -6,6 +6,7 @@ const ContactsContext = createContext();
 
 const ContactsProvider = ({ children }) => {
     const [contacts, setContacts] = useState([]);
+    const [userContacts, setUserContacts] = useState([]);
     const { socketData, sendMessage} = useSocket();
     
     useEffect(() => {
@@ -30,6 +31,7 @@ const ContactsProvider = ({ children }) => {
   return (
     <ContactsContext.Provider value={{ 
       contacts, 
+      userContacts,
     }}>
       {children}
     </ContactsContext.Provider>

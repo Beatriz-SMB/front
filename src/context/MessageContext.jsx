@@ -7,8 +7,11 @@ const MessageContext = createContext();
 
 const MessageProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
+  const [contacts, setContacts] = useState([]);
   const { sendMessage, socketData, connectionStatus } = useSocket('');
-  const { contacts } = useContext(ContactsContext);
+  // const { contacts } = useContext(ContactsContext);
+  let user_id = localStorage.getItem("user_id");
+  let user_name = localStorage.getItem("user_name");
 
   const [chatID, setChatID] = useState(null);
 
@@ -23,13 +26,33 @@ const MessageProvider = ({ children }) => {
   }, [chatID, connectionStatus, sendMessage]);
 
   useEffect(() => {
+    if (connectionStatus === 'Conectado') {
+      sendMessage(JSON.stringify({
+            channel: "user",
+            method: "GET-contacts",
+            _id: user_id,
+        }));
+    }
+  }, [connectionStatus, sendMessage]);
+
+
+  useEffect(() => {
+    if (socketData?.contacts  && Array.isArray(socketData.contacts)) {
+      setContacts(socketData.contacts);
+    }
+  }, [socketData]);
+
+  useEffect(() => {
     if (socketData?.type === "messageList" && Array.isArray(socketData.msg)) {
 
       const idToUsernameMap = {};
       if (contacts && contacts.length > 0) {
         contacts.forEach(contact => {
-          if (contact?.id && contact?.username) {
-            idToUsernameMap[contact.id] = contact.username;
+          if (contact?._id && contact?.username) {
+            idToUsernameMap[contact._id] = contact.username;
+          } 
+          if (user_id){
+            idToUsernameMap[user_id] = user_name;
           }
         });
       }
