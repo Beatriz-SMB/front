@@ -7,9 +7,6 @@ import { useMediaQuery } from "@react-hook/media-query";
 /* 🧩 COMPONENTS */
 import Menu from "../../components/menu";
 
-/* 🔗 SERVICE */
-import { useSocket } from '../../hooks/useSocket';
-
 /* 📁 ASSETS*/
 import { send, clip, menu, group } from "../../assets/icons";
 

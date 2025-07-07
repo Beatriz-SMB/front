@@ -44,6 +44,7 @@ async function initServerMonitor(onChange) {
       const newServer = await selectAvailableServer();
       if (newServer && newServer !== currentServer) {
         currentServer = newServer;
+        console.log("New server available: ",currentServer)
         if (onChange) onChange(currentServer);
       }
     }
@@ -52,8 +53,6 @@ async function initServerMonitor(onChange) {
 
 // Exporta a URL ativa
 function getCurrentServer() {
-    // console.log("Server available: ",currentServer)
-  // return "ws://localhost:8080";
   return currentServer;
 }
 

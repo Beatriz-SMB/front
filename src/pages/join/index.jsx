@@ -5,7 +5,7 @@ import { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 /* 🔗 SERVICE */
-import { useSocket } from '../../hooks/useSocket';
+import { WebSocketContext } from "../../context/WebSocketContext";
 
 /* 🧠 CONTEXT */
 import { MessageContext } from '../../context/MessageContext';
@@ -27,7 +27,7 @@ const Join = () => {
 
     const { showMessage } = useContext(MessageContext);
 
-    const { sendMessage, socketData } = useSocket();
+    const { sendMessage, socketData } = useContext(WebSocketContext);
 
     const usernameRef = useRef(null);
     // const passwordRef = useRef(null);
@@ -51,7 +51,7 @@ const Join = () => {
     }
 
     const handleLogin = (response) => {
-        if (response?.message.toLowerCase() === "username founded") {
+        if (response && response.message.toLowerCase() === "username founded") {
             localStorage.setItem('user_id', response._id);
             localStorage.setItem('user_name', usernameRef.current.value);
             navigate("/");
@@ -60,7 +60,8 @@ const Join = () => {
     }
 
     useEffect(() => {
-        if (socketData) {
+        if (socketData?.message) {
+            console.log("Dados",socketData)
             handleLogin(socketData);
         }
     }, [socketData]);

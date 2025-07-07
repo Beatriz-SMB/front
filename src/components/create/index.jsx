@@ -12,7 +12,7 @@ import { person, add, remove } from "../../assets/icons";
 import { Container, AddIcon, AddOrRemoveIcon, PersonIcon } from "./styles";
 
 /* 🔗 SERVICE */
-import { useSocket } from '../../hooks/useSocket';
+import { WebSocketContext } from "../../context/WebSocketContext";
 import { validateGroupName } from "../../utils/validation";
 import { useReload } from "../../context/ReloadChatsContext";
 
@@ -21,7 +21,7 @@ const Create = () => {
     const { closeModal } = useContext(ModalContext);
     // const { showMessage } = useContext(MessageContext);
 
-    const { sendMessage, socketData, readyState } = useSocket();
+    const { sendMessage, socketData, readyState } = useContext(WebSocketContext);
     const { setReloadGroups } = useReload();
 
     const [contacts, setContacts] = useState([]);

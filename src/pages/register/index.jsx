@@ -5,7 +5,7 @@ import { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 /* 🔗 SERVICE */
-import { useSocket } from '../../hooks/useSocket';
+import { WebSocketContext } from "../../context/WebSocketContext";
 
 /* 🧠 CONTEXT */
 import { MessageContext } from '../../context/MessageContext';
@@ -27,7 +27,7 @@ const Register = () => {
 
     const { showMessage } = useContext(MessageContext);
 
-    const { sendMessage } = useSocket();
+    const { sendMessage } = useContext(WebSocketContext);
 
     const usernameRef = useRef(null);
     const nameRef = useRef(null);

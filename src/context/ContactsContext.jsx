@@ -1,13 +1,13 @@
 /* ⚛ REACT */
-import React, { createContext, useState, useEffect} from 'react';
-import { useSocket } from '../hooks/useSocket';
+import React, { createContext, useState, useEffect, useContext} from 'react';
+import { WebSocketContext } from './WebSocketContext';
 
 const ContactsContext = createContext();
 
 const ContactsProvider = ({ children }) => {
     const [contacts, setContacts] = useState([]);
     const [userContacts, setUserContacts] = useState([]);
-    const { socketData, sendMessage} = useSocket();
+    const { socketData, sendMessage} = useContext(WebSocketContext);
     
     useEffect(() => {
         sendMessage(JSON.stringify({
@@ -24,7 +24,6 @@ const ContactsProvider = ({ children }) => {
                 email: user.Email,
             }));
             setContacts(formattedUsers);
-            console.log("contacts:", formattedUsers)
         }
     }, [socketData]);
 

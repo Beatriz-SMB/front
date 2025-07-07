@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useSocket } from './useSocket';
+import { useEffect, useState, useContext} from 'react';
+import { WebSocketContext } from '../context/WebSocketContext';
 
 export function useChatInfo(chatId) {
   const [chatInfo, setChatInfo] = useState(null);
@@ -8,7 +8,7 @@ export function useChatInfo(chatId) {
     sendMessage,
     socketData,
     connectionStatus,
-  } = useSocket('');
+  } = useContext(WebSocketContext);
 
   // Envia o pedido de informações do chat
   useEffect(() => {

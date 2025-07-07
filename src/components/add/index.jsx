@@ -12,14 +12,14 @@ import { add, person, remove, search } from "../../assets/icons";
 import { Container, AddIcon, PersonIcon, AddOrRemoveIcon, SearchIcon } from "./styles";
 
 /* 🔗 SERVICE */
-import { useSocket } from '../../hooks/useSocket';
+import { WebSocketContext } from "../../context/WebSocketContext";
 
 const Add = () => {
 
     const { closeModal } = useContext(ModalContext);
     const { showMessage } = useContext(MessageContext);
 
-    const { sendMessage, socketData } = useSocket();
+    const { sendMessage, socketData } = useContext(WebSocketContext);
 
     const [isLoading, setIsLoading] = useState(false);
     const [isPlusIcon, setIsPlusIcon] = useState(true);

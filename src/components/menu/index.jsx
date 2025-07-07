@@ -1,5 +1,5 @@
 /* ⚛ REACT */
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef} from "react";
 
 /* 📦 LIBS */
 import { useNavigate } from "react-router";
@@ -17,10 +17,10 @@ import { close, logout, group, person, search, addPerson, addGroup, more } from 
 import { Sidebar, CloseIcon, LogoutIcon, ChatIcon, SearchIcon, AddPersonIcon, AddGroupIcon, MoreIcon } from "./styles";
 
 /* 🔗 SERVICE */
-import { useSocket } from '../../hooks/useSocket';
 import { useGetChatID } from "../../services/chat/GetChatID";
 import { MessageContext } from "../../context/MessageContext";
 import { useReload } from "../../context/ReloadChatsContext";
+import { WebSocketContext } from "../../context/WebSocketContext";
 
 const Menu = ({ onClose }) => {
 
@@ -28,7 +28,7 @@ const Menu = ({ onClose }) => {
 
     const { openModal } = useContext(ModalContext);
 
-    const { sendMessage, socketData} = useSocket();
+    const { sendMessage, socketData} = useContext(WebSocketContext);
 
     // const searchInputRef = useRef(null);
 

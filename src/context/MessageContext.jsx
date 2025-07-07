@@ -1,6 +1,6 @@
 /* ⚛ REACT */
 import React, { createContext, useState, useEffect, useContext} from 'react';
-import { useSocket } from '../hooks/useSocket';
+import { WebSocketContext } from './WebSocketContext';
 import { ContactsContext } from './ContactsContext';
 
 const MessageContext = createContext();
@@ -8,7 +8,7 @@ const MessageContext = createContext();
 const MessageProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [contacts, setContacts] = useState([]);
-  const { sendMessage, socketData, connectionStatus } = useSocket('');
+  const { sendMessage, socketData, connectionStatus } = useContext(WebSocketContext);
   // const { contacts } = useContext(ContactsContext);
   let user_id = localStorage.getItem("user_id");
   let user_name = localStorage.getItem("user_name");
@@ -41,7 +41,7 @@ const MessageProvider = ({ children }) => {
       setContacts(socketData.contacts);
     }
   }, [socketData]);
-
+  
   useEffect(() => {
     if (socketData?.type === "messageList" && Array.isArray(socketData.msg)) {
 
@@ -79,7 +79,7 @@ const MessageProvider = ({ children }) => {
     }
 
     const id = Date.now();
-
+    
     const newMessage = {
       id,
       type,
